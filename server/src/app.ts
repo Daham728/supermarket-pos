@@ -4,6 +4,8 @@ import express, {
   type Response,
 } from "express";
 import cors from "cors";
+import productRoutes from "./routes/productRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
 
 const app = express();
 
@@ -30,6 +32,9 @@ app.get("/api/health", (_req: Request, res: Response) => {
     timestamp: new Date().toISOString(),
   });
 });
+
+app.use("/api/products", productRoutes);
+app.use("/api/categories", categoryRoutes);
 
 app.use((_req: Request, res: Response) => {
   res.status(404).json({
