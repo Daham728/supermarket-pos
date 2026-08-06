@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import prisma from "../src/config/prisma.js";
 
 async function main() {
@@ -108,6 +109,7 @@ async function main() {
     });
   }
 
+  console.log(`Created or updated ${sampleProducts.length} sample products.`);
   console.log(`Created or updated ${sampleProducts.length} sample products.`);
   console.log("Database seed completed successfully.");
 }
