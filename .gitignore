@@ -29,3 +29,5 @@ Thumbs.db
 
 # VS Code personal settings
 .vscode/
+# Generated Prisma Client
+server/src/generated/
