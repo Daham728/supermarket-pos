@@ -17,6 +17,9 @@ function getJwtSecret(): string {
 
 const jwtSecret: string = getJwtSecret();
 
+/**
+ * Authentication Middleware: Verifies JWT token & attaches user to request
+ */
 export async function authenticate(
   req: Request,
   res: Response,
@@ -99,4 +102,33 @@ export async function authenticate(
       message: "Invalid or expired authentication token",
     });
   }
+}
+
+/**
+ * Authorization Middleware: Restricts route access to specific user roles
+ */
+export function authorizeRoles(...allowedRoles: string[]) {
+  return (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    if (!req.user) {
+      res.status(401).json({
+        success: false,
+        message: "User is not authenticated",
+      });
+      return;
+    }
+
+    if (!allowedRoles.includes(req.user.role)) {
+      res.status(403).json({
+        success: false,
+        message: "You do not have permission to perform this action",
+      });
+      return;
+    }
+
+    next();
+  };
 }

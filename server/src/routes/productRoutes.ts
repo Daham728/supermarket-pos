@@ -7,17 +7,41 @@ import {
   getProducts,
   updateProduct,
 } from "../controllers/productController.js";
+import {
+  authenticate,
+  authorizeRoles,
+} from "../middleware/authMiddleware.js";
 
 const router = Router();
 
+// Every product route requires a logged-in user
+router.use(authenticate);
+
+// Admins and cashiers can read products
 router.get("/", getProducts);
 
-// This must appear before /:id
+// This must remain above /:id
 router.get("/barcode/:barcode", getProductByBarcode);
 
 router.get("/:id", getProductById);
-router.post("/", createProduct);
-router.put("/:id", updateProduct);
-router.patch("/:id/deactivate", deactivateProduct);
+
+// Only administrators can manage products
+router.post(
+  "/",
+  authorizeRoles("ADMIN"),
+  createProduct
+);
+
+router.put(
+  "/:id",
+  authorizeRoles("ADMIN"),
+  updateProduct
+);
+
+router.patch(
+  "/:id/deactivate",
+  authorizeRoles("ADMIN"),
+  deactivateProduct
+);
 
 export default router;
