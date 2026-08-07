@@ -112,6 +112,74 @@ async function main() {
   console.log(`Created or updated ${sampleProducts.length} sample products.`);
   console.log(`Created or updated ${sampleProducts.length} sample products.`);
   console.log("Database seed completed successfully.");
+    const seedUsers = [
+    {
+      name:
+        process.env.SEED_ADMIN_NAME?.trim() ||
+        "Store Administrator",
+      email: process.env.SEED_ADMIN_EMAIL
+        ?.trim()
+        .toLowerCase(),
+      password: process.env.SEED_ADMIN_PASSWORD,
+      role: "ADMIN",
+    },
+    {
+      name:
+        process.env.SEED_CASHIER_NAME?.trim() ||
+        "Main Cashier",
+      email: process.env.SEED_CASHIER_EMAIL
+        ?.trim()
+        .toLowerCase(),
+      password: process.env.SEED_CASHIER_PASSWORD,
+      role: "CASHIER",
+    },
+  ];
+
+  for (const seedUser of seedUsers) {
+    if (!seedUser.email || !seedUser.password) {
+      throw new Error(
+        `Email or password is missing for the ${seedUser.role} user.`
+      );
+    }
+
+    if (seedUser.password.length < 12) {
+      throw new Error(
+        `${seedUser.role} password must contain at least 12 characters.`
+      );
+    }
+
+    if (Buffer.byteLength(seedUser.password, "utf8") > 72) {
+      throw new Error(
+        `${seedUser.role} password cannot exceed 72 UTF-8 bytes.`
+      );
+    }
+
+    const passwordHash = await bcrypt.hash(
+      seedUser.password,
+      12
+    );
+
+    await prisma.user.upsert({
+      where: {
+        email: seedUser.email,
+      },
+      update: {
+        name: seedUser.name,
+        passwordHash,
+        role: seedUser.role,
+        isActive: true,
+      },
+      create: {
+        name: seedUser.name,
+        email: seedUser.email,
+        passwordHash,
+        role: seedUser.role,
+        isActive: true,
+      },
+    });
+  }
+
+  console.log("Created or updated Admin and Cashier accounts.");
 }
 
 main()
