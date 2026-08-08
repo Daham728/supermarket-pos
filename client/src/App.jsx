@@ -3,6 +3,7 @@ import {
   Route,
   Routes,
 } from "react-router";
+import ProductsPage from "./pages/ProductsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
 import DashboardLayout from "./layouts/DashboardLayout";
@@ -39,6 +40,16 @@ export default function App() {
           path="/pos"
           element={<PosPage />}
         />
+        <Route
+  path="/products"
+  element={
+    <ProtectedRoute
+      allowedRoles={["ADMIN"]}
+    >
+      <ProductsPage />
+    </ProtectedRoute>
+  }
+/>
 
         <Route
           path="/sales"

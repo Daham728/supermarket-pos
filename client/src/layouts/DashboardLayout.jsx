@@ -31,10 +31,12 @@ const navigationItems = [
     available: true,
   },
   {
-    label: "Products",
-    icon: Package,
-    available: false,
-  },
+  label: "Products",
+  icon: Package,
+  path: "/products",
+  available: true,
+  roles: ["ADMIN"],
+},
   {
     label: "Categories",
     icon: Tags,
@@ -89,7 +91,13 @@ export default function DashboardLayout() {
             WORKSPACE
           </span>
 
-          {navigationItems.map((item) => {
+       {navigationItems
+  .filter(
+    (item) =>
+      !item.roles ||
+      item.roles.includes(user?.role),
+  )
+  .map((item) => {
             const Icon = item.icon;
 
             if (item.available) {
