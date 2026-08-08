@@ -4,6 +4,7 @@ import PublicRoute from "./components/PublicRoute";
 import DashboardLayout from "./layouts/DashboardLayout";
 import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
+import PosPage from "./pages/PosPage";
 
 export default function App() {
   return (
@@ -18,14 +19,14 @@ export default function App() {
       />
 
       <Route
-        path="/dashboard"
         element={
           <ProtectedRoute>
             <DashboardLayout />
           </ProtectedRoute>
         }
       >
-        <Route index element={<DashboardPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/pos" element={<PosPage />} />
       </Route>
 
       <Route path="/" element={<Navigate to="/dashboard" replace />} />

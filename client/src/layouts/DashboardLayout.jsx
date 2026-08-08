@@ -20,11 +20,12 @@ const navigationItems = [
     path: "/dashboard",
     available: true,
   },
-  {
-    label: "Point of Sale",
-    icon: ScanBarcode,
-    available: false,
-  },
+ {
+  label: "Point of Sale",
+  icon: ScanBarcode,
+  path: "/pos",
+  available: true,
+},
   {
     label: "Products",
     icon: Package,
