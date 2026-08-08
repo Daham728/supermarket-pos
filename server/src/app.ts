@@ -3,6 +3,7 @@ import express, {
   type Request,
   type Response,
 } from "express";
+import saleRoutes from "./routes/saleRoutes.js";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
@@ -37,6 +38,7 @@ app.get("/api/health", (_req: Request, res: Response) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/sales", saleRoutes);
 
 app.use((_req: Request, res: Response) => {
   res.status(404).json({
