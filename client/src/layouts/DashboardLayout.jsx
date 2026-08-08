@@ -1,4 +1,8 @@
-import { NavLink, Outlet, useNavigate } from "react-router";
+import {
+  NavLink,
+  Outlet,
+  useNavigate,
+} from "react-router";
 import {
   BarChart3,
   Boxes,
@@ -20,12 +24,12 @@ const navigationItems = [
     path: "/dashboard",
     available: true,
   },
- {
-  label: "Point of Sale",
-  icon: ScanBarcode,
-  path: "/pos",
-  available: true,
-},
+  {
+    label: "Point of Sale",
+    icon: ScanBarcode,
+    path: "/pos",
+    available: true,
+  },
   {
     label: "Products",
     icon: Package,
@@ -44,7 +48,8 @@ const navigationItems = [
   {
     label: "Sales",
     icon: ReceiptText,
-    available: false,
+    path: "/sales",
+    available: true,
   },
   {
     label: "Reports",
@@ -59,7 +64,10 @@ export default function DashboardLayout() {
 
   function handleLogout() {
     logout();
-    navigate("/login", { replace: true });
+
+    navigate("/login", {
+      replace: true,
+    });
   }
 
   return (
@@ -77,7 +85,9 @@ export default function DashboardLayout() {
         </div>
 
         <nav className="sidebar-navigation">
-          <span className="navigation-label">WORKSPACE</span>
+          <span className="navigation-label">
+            WORKSPACE
+          </span>
 
           {navigationItems.map((item) => {
             const Icon = item.icon;
@@ -85,8 +95,14 @@ export default function DashboardLayout() {
             if (item.available) {
               return (
                 <NavLink
-                  className={({ isActive }) =>
-                    `navigation-item ${isActive ? "active" : ""}`
+                  className={({
+                    isActive,
+                  }) =>
+                    `navigation-item ${
+                      isActive
+                        ? "active"
+                        : ""
+                    }`
                   }
                   key={item.label}
                   to={item.path}
@@ -133,7 +149,9 @@ export default function DashboardLayout() {
 
         <div className="sidebar-user">
           <div className="user-avatar">
-            {user?.name?.charAt(0).toUpperCase() || "U"}
+            {user?.name
+              ?.charAt(0)
+              .toUpperCase() || "U"}
           </div>
 
           <div className="user-details">
@@ -145,6 +163,7 @@ export default function DashboardLayout() {
             className="logout-icon-button"
             type="button"
             title="Log out"
+            aria-label="Log out"
             onClick={handleLogout}
           >
             <LogOut size={19} />
